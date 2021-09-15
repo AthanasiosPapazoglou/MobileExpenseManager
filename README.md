@@ -1,6 +1,6 @@
 # mobile_expense_manager
 
-A new Flutter project.
+Flutter Project. Expense Manager with statistical graphs and transactional history List. 
 
 ## Getting Started
 
