@@ -1,4 +1,3 @@
-//change from GIT
 import 'package:flutter/material.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
