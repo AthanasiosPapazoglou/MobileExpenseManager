@@ -1,4 +1,3 @@
-//Git test
 import 'package:flutter/material.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
