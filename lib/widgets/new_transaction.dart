@@ -1,10 +1,8 @@
-//Αυτο το widget δομει τη φορμα με τα 2 input fields και το κουμπι για submit
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
-  final Function addTx;
+  final Function addTx; // Store the _addNewTransaction function of main whih
 
   NewTransaction(this.addTx);
 
@@ -13,12 +11,16 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final _titleController = TextEditingController();
-  final _amountController = TextEditingController();
-  DateTime _selectedDate;
+  final _titleController =
+      TextEditingController(); // Text Handler for expense title
+  final _amountController =
+      TextEditingController(); // Text Handler for expense amount
+  DateTime _selectedDate; // variable to Store Selected Date of current Expense
 
+
+  //behavoral model for Pop Up modal sheet. Data will be submited only when both (if) do not return
   void _submitData() {
-    if(_amountController.text.isEmpty){
+    if (_amountController.text.isEmpty) {
       return;
     }
     final enteredTitle = _titleController.text;
@@ -37,7 +39,10 @@ class _NewTransactionState extends State<NewTransaction> {
     Navigator.of(context).pop();
   }
 
+  //Prototypal dart function showing a Material Design date picker
+  //This executes when (if) does not return AND before _submitedData executes
   void _presentDatePicker() {
+    //this is prototypal
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),

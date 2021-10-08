@@ -10,27 +10,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'ExpenseManagerKEK',
       theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.amber,
-          fontFamily: 'Quicksand',
+        primarySwatch: Colors.blueGrey,
+        accentColor: Colors.amber,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
                   fontFamily: 'OpenSans',
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
                 ),
               ),
-          appBarTheme: AppBarTheme(
-            textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-          )),
+        ),
+      ),
       home: MyHomePage(),
     );
   }
@@ -42,22 +44,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    /*Transaction(
-    id: 't1',
-    title: 'New Shoes',
-    amount: 69.99,
-    date: DateTime.now(),
-      ),
-      Transaction(
-        id: 't2',
-        title: 'Weekly Groceries',
-        amount: 16.53,
-        date: DateTime.now(),
-      ),
-      */
-  ];
+  final List<Transaction> _userTransactions = [];
 
+  //Forms the seven elements representing the most recent week days
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
@@ -68,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
+  //creates a new transaction instance with the given arguments | refreshes our transactions list
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
       title: txTitle,
@@ -78,17 +68,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       _userTransactions.add(newTx);
-      //Εδω προσοχη ειχε αναφερει το add γιατι δεν μπορουσαμε να αλλαξουμε εκ νεου το πινακα (κατι λογω stateless αλλου)
     });
   }
 
+  //Opens the Pop Up modal sheet for new records
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
-      //Προτυπη!
       context: ctx,
       builder: (_) {
         return GestureDetector(
           onTap: () {},
+          // ! CUSTOM WIDGET CALL
           child: NewTransaction(_addNewTransaction),
           behavior: HitTestBehavior.opaque,
         );
@@ -96,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  //Deletes transaction that matches the given argument ID
   void _deleteTransaction(String id) {
     setState(() {
       _userTransactions.removeWhere((tx) => tx.id == id);
@@ -111,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.add),
+          // ! CUSTOM WIDGET CALL
           onPressed: () => _startAddNewTransaction(context),
         ),
       ],
@@ -123,25 +115,32 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.4,
-                child: Chart(_recentTransactions)),
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.4,
+              child: Chart(_recentTransactions),
+            ),
             Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.6,
-                child: TransactionList(_userTransactions, _deleteTransaction)),
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.6,
+              child: TransactionList(_userTransactions, _deleteTransaction),
+            ),
           ],
         ),
       ),
+
+      //Button and functionality set up for our pop up initialiser
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        // ! CUSTOM WIDGET CALL
         onPressed: () => _startAddNewTransaction(context),
       ),
     );
   }
 }
+
+
